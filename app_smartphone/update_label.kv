@@ -3,11 +3,7 @@
 	MDScreen:
 		name: 'chart'
 		size: root.width, root.height
-		MDBoxLayout:
-			id: 'boxLay'
-			orientation: 'vertical'
-			MDLabel:
-				text: 'teea'
+		
 	
 		MDTopAppBar:
 			type: "small"
@@ -35,6 +31,7 @@
 			line_width: dp(5)
 			size_hint_x: 0.5
 		
+
 
 		MDIconButton:
 			id: home
@@ -81,6 +78,15 @@
 			size_hint_x: 0.7
 		
 
+		MDCircularProgressIndicator:
+			id: prg_chart
+			active: False
+			determinate: True
+			determinate_time: 0.5
+			pos_hint: {"center_x": .2, "center_y": .6}
+			line_width: dp(5)
+			size_hint_x: 0.7
+
 		MDIconButton:
 			id: chart
 			icon: "chart-areaspline"
@@ -117,11 +123,11 @@
 			size: "84dp", "84dp"
 			pos_hint: {"center_x": .8, "center_y": .6}
 			on_release: root.manager.transition.direction = 'left'
-			on_release: root.manager.current = 'user'
+			on_release: root.manager.current = 'about'
 
 <screen3>:
 	MDScreen:
-		name: 'user'
+		name: 'about'
 		size: root.width, root.height
 
 		MDTopAppBar:
@@ -132,14 +138,15 @@
 
 
 			MDTopAppBarTitle:
-				text: "User Info"
+				text: "About"
 				style: "tonal"
 				bold: True
 				theme_font_size: "Custom"
 				font_size: "20sp"
 				pos_hint: {"center_x": .5}
-			
-
+		MDLabel:
+			text: "Experimental: Created for helping measuring and keeping data for TCC"
+			halign: 'center'
 
 	
 

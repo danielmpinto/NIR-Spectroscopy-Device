@@ -19,38 +19,46 @@ from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.label import MDLabel
 ##
-from kivy_garden.graph import Graph, MeshLinePlot
+from kivy_garden.graph import Graph, MeshLinePlot, Plot
 from math import sin
 import random
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog, MDDialogHeadlineText, MDDialogButtonContainer, MDDialogSupportingText, MDDialogContentContainer
 
+
+
+
 # Crie um novo gráfico
-graph = Graph(
-    xlabel='last day',
-    ylabel='Y',
-    x_ticks_minor=5,
-    x_ticks_major=25,
-    y_ticks_major=1,
-    y_grid_label=True,
-    x_grid_label=True,
-    padding=5,
-    x_grid=True,
-    y_grid=True,
-    xmin=-0,
-    xmax=7,
-    ymin=0,
-    ymax=200
-)
+# graph = Graph(
+#     xlabel='last day',
+#     ylabel='mg / dL',
+#     x_ticks_minor=24,
+#     x_ticks_major=1,
+#     y_ticks_minor=5,
+#     y_ticks_major=1,
+#     y_grid_label=True,
+#     x_grid_label=True,
+#     padding=5,
+#     x_grid=True,
+#     y_grid=True,
+#     xmin=-0,
+#     xmax=10,
+#     ymin=0,
+#     ymax=250
+# )
 
 # Crie um novo plot
-plot = MeshLinePlot(color=[1, 0, 0, 1])
+plot = MeshLinePlot(color=[0.2, 0.6, 1, 1])
 
-# Gere pontos para o plot
-plot.points = [(x, random.randint(-10, 10)) for x in range(0, 101)]
+
+## dados
+# Gere pontos para o plots
+plot.points = [(x, random.randint(80, 200)) for x in range(0, 101)]
+
+## enddados
 
 # Adicione o plot ao gráfico
-graph.add_plot(plot)
+#graph.add_plot(plot)
 
 
 # Designate Our .kv design file 
@@ -84,7 +92,7 @@ class screen2(MDScreen):
                 halign="center"
             ),
             MDDialogSupportingText(
-                text="Your actual glucose level is\nXXX mg / dL",
+                text="Your actual glucose level is\n 80 mg / dL",
                 bold = "True",
                 halign="center",
             ),
@@ -92,17 +100,86 @@ class screen2(MDScreen):
         ).open()
         self.ids.btnplay.icon = 'play'
     ## botao play end
+    
 
 class screen1(MDScreen):
-    pass
+    # adicionar grafico na screen1
+    def __init__(self, **kwargs):
+        super(screen1, self).__init__(**kwargs)
 
-class screen1_widget(MDWidget):
-    pass
+    def on_kv_post(self, base_widget):
+        # Adiciona um MDLabel ao MDBoxLayout
+        box_lay = MDBoxLayout(orientation='vertical', size_hint_y=0.5, pos_hint={"top": 0.9})  # Define tamanho e extensão do layout
+        #cria grafico pela primeiara vez
+        graph = Graph(
+            xlabel='Last day (hour)',
+            ylabel='glucose (mg / dL)',
+            # linhas pequenas sao horas
+            x_ticks_minor=6,
+            # mostrar de 6,12,18 e 24
+            x_ticks_major=6,
+            # cada divisao com 5
+            y_ticks_minor=5,
+            # mostrar de 50 em 50 mg/dl
+            y_ticks_major=50,
+            y_grid_label=True,
+            x_grid_label=True,
+            padding=5,
+            x_grid=True,
+            y_grid=True,
+            xmin=-0,
+            # 24 horas
+            xmax=24,
+            ymin=0,
+            # 250 mg/dl
+            ymax=250
+        )
+        graph.add_plot(plot)
+        box_lay.add_widget(graph)
+        self.add_widget(box_lay)
+
+        box_button = MDBoxLayout(orientation='horizontal', size_hint_y=0.5, pos_hint={"top": 0.3})  # Define tamanho e extensão do layout
+        
+        # adiciona widget atualizado na pagina
+        self.add_widget(box_button)
+
+        
+
+    def updtGraph(self):
+        # atualiza grafico
+        graph = Graph(
+            xlabel='last day',
+            ylabel='mg / dL',
+            x_ticks_minor=0,
+            x_ticks_major=2,
+            y_ticks_minor=1,
+            # com numero em cada uma
+            y_ticks_major=2,
+            y_grid_label=True,
+            x_grid_label=True,
+            padding=5,
+            x_grid=True,
+            y_grid=True,
+            xmin=-0,
+            xmax=10,
+            ymin=0,
+            #10 divisoes
+            ymax=10
+        )
+        box_lay.add_widget(graph)
+
+
+
+
+
+    
+
+
 class screen3(MDScreen):
     pass
 
 
-class AwesomeApp(MDApp):
+class GlucoMeasure(MDApp):
     
     def build(self):
         self.theme_cls.theme_style_switch_animation = True
@@ -111,7 +188,7 @@ class AwesomeApp(MDApp):
         sm = MDScreenManager()
         sm.add_widget(screen1(name='chart'))
         sm.add_widget(screen2(name='index'))
-        sm.add_widget(screen3(name='user'))
+        sm.add_widget(screen3(name='about'))
         sm.current = 'index'
         
         return sm
@@ -120,4 +197,4 @@ class AwesomeApp(MDApp):
 
 
 if __name__ == '__main__':
-	AwesomeApp().run()
+	GlucoMeasure().run()
