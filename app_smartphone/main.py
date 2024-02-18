@@ -6,14 +6,14 @@ from kivy.lang import Builder
 from kivy.clock import Clock 
 from kivymd.uix.dialog import MDDialog
 
-from kivymd.uix.appbar import MDActionBottomAppBarButton
-from kivymd.uix.tab import (
-    MDTabsItem,
-    MDTabsItemIcon,
-    MDTabsItemText,
-    MDTabsBadge,
-)
-from kivymd.uix.button import MDButton, MDButtonText
+#from kivymd.uix.appbar import MDActionBottomAppBarButton
+# from kivymd.uix.tab import (
+#     MDTabsItem,
+#     MDTabsItemIcon,
+#     MDTabsItemText,
+#     MDTabsBadge,
+# )
+#from kivymd.uix.button import MDButton, MDButtonText
 ##ok
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import MDScreen
@@ -23,7 +23,7 @@ from kivy_garden.graph import Graph, MeshLinePlot, Plot
 from math import sin
 import random
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.dialog import MDDialog, MDDialogHeadlineText, MDDialogButtonContainer, MDDialogSupportingText, MDDialogContentContainer
+from kivymd.uix.dialog import MDDialog
 
 
 
@@ -85,19 +85,12 @@ class screen2(MDScreen):
     
     def stop_progress(self, dt):
         self.progress.active = False  # para o MDCircularProgressIndicator
-        MDDialog(
-            
-            MDDialogHeadlineText(
-                text="Finished measurement",
-                halign="center"
-            ),
-            MDDialogSupportingText(
-                text="Your actual glucose level is\n 80 mg / dL",
-                bold = "True",
-                halign="center",
-            ),
-            MDDialogButtonContainer(),
-        ).open()
+        self.dialog = MDDialog(
+                title="Glucose Measuring",
+                text="Your glucose is\n 150 mg / dL",
+                pos_hint= {'center_x': .5, 'center_y': .5},
+            )
+        self.dialog.open()
         self.ids.btnplay.icon = 'play'
     ## botao play end
     

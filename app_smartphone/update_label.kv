@@ -6,23 +6,14 @@
 		
 	
 		MDTopAppBar:
-			type: "small"
-			size_hint_x: 1
+        	title: "Chart"
 			size_hint_y: .1
 			pos_hint: {"center_x": .5, "center_y": .95}
-
-
-			MDTopAppBarTitle:
-				text: "Chart"
-				style: "tonal"
-				bold: True
-				theme_font_size: "Custom"
-				font_size: "20sp"
-				pos_hint: {"center_x": .5}
+			elevation: 4
 			
 
 
-		MDCircularProgressIndicator:
+		MDSpinner:
 			id: progress
 			active: False
 			determinate: True
@@ -33,14 +24,12 @@
 		
 
 
-		MDIconButton:
+		MDFloatingActionButton:
 			id: home
 			icon: "home-outline"
 			angle: 120
 			font_size: "70sp"
 			theme_bg_color: "Primary"
-			style: "filled"
-			radius: [self.height / 2, ]
 			size: "84dp", "84dp"
 			pos_hint: {"center_x": .5, "center_y": .1}
 			on_release: root.manager.transition.direction = 'left'
@@ -52,23 +41,14 @@
 		size: root.width, root.height
 
 		MDTopAppBar:
-			type: "small"
-			size_hint_x: 1
+        	title: "GlucoMeasure"
 			size_hint_y: .1
 			pos_hint: {"center_x": .5, "center_y": .95}
-
-
-			MDTopAppBarTitle:
-				text: "GlucoMeasure"
-				style: "tonal"
-				bold: True
-				theme_font_size: "Custom"
-				font_size: "20sp"
-				pos_hint: {"center_x": .5}
+			elevation: 4
 			
 
 
-		MDCircularProgressIndicator:
+		MDSpinner:
 			id: progress
 			active: False
 			determinate: True
@@ -78,7 +58,7 @@
 			size_hint_x: 0.7
 		
 
-		MDCircularProgressIndicator:
+		MDSpinner:
 			id: prg_chart
 			active: False
 			determinate: True
@@ -87,39 +67,35 @@
 			line_width: dp(5)
 			size_hint_x: 0.7
 
-		MDIconButton:
+		MDFloatingActionButton:
 			id: chart
 			icon: "chart-areaspline"
 			angle: 120
 			font_size: "70sp"
 			theme_bg_color: "Primary"
 			style: "filled"
-			radius: [self.height / 2, ]
 			size: "84dp", "84dp"
 			pos_hint: {"center_x": .2, "center_y": .6}
 			on_release: root.manager.transition.direction = 'right'
 			on_release: root.manager.current = 'chart'
 
-		MDIconButton:
+		MDFloatingActionButton:
 			id: btnplay
 			icon: "play"
 			angle: 120
 			font_size: "70sp"
 			theme_bg_color: "Primary"
-			style: "filled"
-			radius: [self.height / 2, ]
 			size: "150dp", "150dp"
 			pos_hint: {"center_x": .5, "center_y": .3}
 			on_release: root.start_progress()
 
-		MDIconButton:
+		MDFloatingActionButton:
 			id: perfil
 			icon: "account-edit-outline"
 			angle: 120
 			font_size: "70sp"
 			theme_bg_color: "Primary"
 			style: "filled"
-			radius: [self.height / 2, ]
 			size: "84dp", "84dp"
 			pos_hint: {"center_x": .8, "center_y": .6}
 			on_release: root.manager.transition.direction = 'left'
@@ -131,19 +107,14 @@
 		size: root.width, root.height
 
 		MDTopAppBar:
-			type: "small"
-			size_hint_x: 1
+        	title: "About"
 			size_hint_y: .1
 			pos_hint: {"center_x": .5, "center_y": .95}
+			elevation: 4
 
 
-			MDTopAppBarTitle:
-				text: "About"
-				style: "tonal"
-				bold: True
-				theme_font_size: "Custom"
-				font_size: "20sp"
-				pos_hint: {"center_x": .5}
+		
+				
 		MDLabel:
 			text: "Experimental: Created for helping measuring and keeping data for TCC"
 			halign: 'center'
@@ -151,14 +122,12 @@
 	
 
 
-		MDIconButton:
+		MDFloatingActionButton:
 			id: home
 			icon: "home-outline"
 			angle: 120
 			font_size: "70sp"
 			theme_bg_color: "Primary"
-			style: "filled"
-			radius: [self.height / 2, ]
 			size: "84dp", "84dp"
 			pos_hint: {"center_x": .5, "center_y": .1}
 			on_release: root.manager.transition.direction = 'right'
