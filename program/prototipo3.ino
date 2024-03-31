@@ -35,10 +35,45 @@ void loading(){
 }  
  
 void onBeatDetected()
-{
+{ 
+    float bpm;
+    float oxi;
+    float glucose;
     Serial.println("Beat!");
     lcd.setCursor(0,0);
     lcd.print("+");
+
+    bpm = pox.getHeartRate();
+    oxi = pox.getSpO2();
+    Serial.print("Heart rate:");
+    Serial.print(bpm);
+    Serial.print("bpm / SpO2:");
+    Serial.print(oxi);
+    lcd.clear();
+    // bpm heart on first
+    lcd.setCursor(1, 0);
+    lcd.write(byte(0));
+    lcd.setCursor(0, 1);
+    lcd.print(bpm);
+    //
+
+    // setting up oxygen level
+    lcd.setCursor(7,0);
+    lcd.print("Oxy");
+    lcd.setCursor(7,1);
+    lcd.print(int(oxi));
+    lcd.print("%");
+    //
+
+    // set glucose
+    lcd.setCursor(13,0);
+    lcd.print("Glu");
+    lcd.setCursor(13,1);
+    glucose = 16714.61 + 0.47 * bpm -351.045 * oxi + 1.85 *(oxi * oxi);
+    lcd.print(int(glucose));
+    //
+    Serial.println("%");
+          
 }
  
 void setup()
@@ -78,47 +113,10 @@ void setup()
  
 void loop()
 {
-    float bpm;
-    float oxi;
-    float glucose;
+    
     lcd.createChar(0, Heart);
     while (true){
     // Make sure to call update as fast as possible
       pox.update();
-      if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
-          bpm = pox.getHeartRate();
-          oxi = pox.getSpO2();
-          Serial.print("Heart rate:");
-          Serial.print(bpm);
-          Serial.print("bpm / SpO2:");
-          Serial.print(oxi);
-          lcd.clear();
-          // bpm heart on first
-          lcd.setCursor(1, 0);
-          lcd.write(byte(0));
-          lcd.setCursor(0, 1);
-          lcd.print(bpm);
-          //
-
-          // setting up oxygen level
-          lcd.setCursor(7,0);
-          lcd.print("Oxy");
-          lcd.setCursor(7,1);
-          lcd.print(oxi);
-          //
-
-          // set glucose
-          lcd.setCursor(13,0);
-          lcd.print("Glu");
-          lcd.setCursor(13,1);
-          glucose = 16714.61 + 0.47 * bpm -351.045 * oxi + 1.85 *(oxi * oxi);
-          lcd.print(int(glucose));
-          //
-          Serial.println("%");
-          
-          
-   
-          tsLastReport = millis();
-      }
     }
 }
