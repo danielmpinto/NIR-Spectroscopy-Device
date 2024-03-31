@@ -37,6 +37,8 @@ void loading(){
 void onBeatDetected()
 {
     Serial.println("Beat!");
+    lcd.setCursor(0,0);
+    lcd.print("+");
 }
  
 void setup()
