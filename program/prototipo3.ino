@@ -109,12 +109,14 @@ void setup()
  
     // Register a callback for the beat detection
     pox.setOnBeatDetectedCallback(onBeatDetected);
+    lcd.print("Insira o dedo");
 }
  
 void loop()
 {
     
     lcd.createChar(0, Heart);
+
     while (true){
     // Make sure to call update as fast as possible
       pox.update();
