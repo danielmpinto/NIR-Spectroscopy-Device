@@ -164,7 +164,10 @@ void medicao(){
   // transforma em glicose
   tensao = media/5;
   glicose = 71.37 * tensao + 69.13;
-  lcd.print("Glicose: " + String(int(glicose)) + "mg/dL");
+  lcd.setCursor(0, 0);
+  lcd.print("Glicose: ");
+  lcd.setCursor(0, 1);
+  lcd.print(String(int(glicose)) + "mg/dL");
   Serial.println(media/5);
   musicaFim();
   delay(5000);
