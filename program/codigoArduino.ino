@@ -16,7 +16,7 @@
 #define RGB_RED 2
 #define RGB_GREEN 3
 #define RGB_BLUE 4
-#define buzzer 5
+#define buzzer 7
 
 LiquidCrystal_PCF8574 lcd(0x27);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
@@ -137,6 +137,8 @@ void medicao(){
   
   int i = 0;
   float media = 0;
+  float glicose = 0;
+  float tensao = 0;
   delay(1000);
   while (i < 5){
     digitalWrite(RGB_RED, 1);
@@ -159,7 +161,10 @@ void medicao(){
   }
   // calcula media da tensao
   lcd.clear();
-  lcd.print("Tensao: " + String(media/5));
+  // transforma em glicose
+  tensao = media/5;
+  glicose = 71.37 * tensao + 69.13;
+  lcd.print("Glicose: " + String(int(glicose)) + "mg/dL");
   Serial.println(media/5);
   musicaFim();
   delay(5000);
