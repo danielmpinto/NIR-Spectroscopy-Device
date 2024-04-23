@@ -1,124 +1,200 @@
-#include <Wire.h>
-#include "MAX30100_PulseOximeter.h"
-#include <LiquidCrystal_PCF8574.h>
- 
-LiquidCrystal_PCF8574 lcd(0x27);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+/*
+  ReadAnalogVoltage
 
+  Reads an analog input on pin 0, converts it to voltage, and prints the result to the Serial Monitor.
+  Graphical representation is available using Serial Plotter (Tools > Serial Plotter menu).
+  Attach the center pin of a potentiometer to pin A0, and the outside pins to +5V and ground.
+
+  This example code is in the public domain.
+
+  https://www.arduino.cc/en/Tutorial/BuiltInExamples/ReadAnalogVoltage
+*/
+#include <Arduino.h>
+#include <Wire.h>
+#include <LiquidCrystal_PCF8574.h>
+
+#define RGB_RED 2
+#define RGB_GREEN 3
+#define RGB_BLUE 4
+#define buzzer 7
+
+LiquidCrystal_PCF8574 lcd(0x27);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 byte dotOff[] = { 0b00000, 0b01110, 0b10001, 0b10001,
                   0b10001, 0b01110, 0b00000, 0b00000 };
 byte dotOn[] = { 0b00000, 0b01110, 0b11111, 0b11111,
                  0b11111, 0b01110, 0b00000, 0b00000 };
 
-#define REPORTING_PERIOD_MS     1000
-
-PulseOximeter pox;
-uint32_t tsLastReport = 0;
-
-// Make custom characters:
-byte Heart[] = {
-  B00000,
-  B01010,
-  B11111,
-  B11111,
-  B01110,
-  B00100,
-  B00000,
-  B00000
-};
-
+// loading initial
 void loading(){
   lcd.setBacklight(255);
   lcd.home();
   lcd.clear();
   lcd.print("Iniciando. ");
-}  
- 
-void onBeatDetected()
-{ 
-    float bpm;
-    float oxi;
-    float glucose;
-    Serial.println("Beat!");
-    lcd.setCursor(0,0);
-    lcd.print("+");
+  digitalWrite(RGB_RED, 1);
+  delay(500);
+  digitalWrite(RGB_RED, 0);
+  delay(500);
+  lcd.clear();
+  lcd.print("Iniciando.. ");
+  digitalWrite(RGB_RED, 1);
+  delay(500);
+  digitalWrite(RGB_RED, 0);
+  delay(500);
+  lcd.clear();
+  lcd.print("Iniciando... ");
+  digitalWrite(RGB_RED, 1);
+  delay(500);
+  digitalWrite(RGB_RED, 0);
+  delay(500);
+  lcd.clear();
+  lcd.print("Iniciando.... ");
+  digitalWrite(RGB_RED, 1);
+  delay(500);
+  digitalWrite(RGB_RED, 0);
+  delay(500);
+  lcd.clear();
+  lcd.print("Tudo pronto!");
+  musicaInicio();
 
-    bpm = pox.getHeartRate();
-    oxi = pox.getSpO2();
-    Serial.print("Heart rate:");
-    Serial.print(bpm);
-    Serial.print("bpm / SpO2:");
-    Serial.print(oxi);
+  
+
+  
+
+  digitalWrite(RGB_GREEN, 1);
+  delay(1000);
+}
+
+void tocarNota(int frequencia, int duracao) {
+  tone(buzzer, frequencia, duracao);
+  delay(duracao + 50); // Adiciona um pequeno atraso entre as notas
+}
+
+void musicaInicio() {
+  // Notas musicais (frequências) para uma escala maior
+  int C = 261;
+  int E = 329;
+  int G = 392;
+
+  // Define a sequência de notas para a música de boas-vindas
+  tocarNota(G, 300);
+  tocarNota(E, 300);
+  tocarNota(C * 2, 600);
+}
+
+void musicaFim() {
+  // Notas musicais (frequências) para uma escala maior
+  int C = 261;
+  int E = 329;
+  int G = 392;
+
+  // Define a sequência de notas para a música de boas-vindas
+  tocarNota(C * 2, 600);
+  tocarNota(E, 300);
+  tocarNota(G, 300);
+  
+  
+}
+
+void musicaMedir() {
+  // Notas musicais (frequências) para uma escala maior
+  int E = 329;
+
+  // Define a sequência de notas para a música de boas-vindas
+  tocarNota(E, 300);
+  
+  
+}
+
+
+
+                
+// the setup routine runs once when you press reset:
+void setup() {
+  pinMode(RGB_BLUE, OUTPUT);
+  pinMode(RGB_RED, OUTPUT);
+  pinMode(RGB_GREEN, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  Serial.begin(115200);
+  Serial.println("LCD...");
+
+  // See http://playground.arduino.cc/Main/I2cScanner how to test for a I2C device.
+  Wire.begin();
+  Wire.beginTransmission(0x27);
+
+  lcd.begin(16, 2);  // initialize the lcd
+
+  lcd.createChar(1, dotOff);
+  lcd.createChar(2, dotOn);
+  loading();
+}
+
+
+void medicao(){
+  digitalWrite(RGB_GREEN, 0);  
+  digitalWrite(RGB_BLUE, 0);  
+  digitalWrite(RGB_RED, 0);
+  
+  int i = 0;
+  float media = 0;
+  float glicose = 0;
+  float tensao = 0;
+  delay(1000);
+  while (i < 5){
+    digitalWrite(RGB_RED, 1);
+    digitalWrite(RGB_GREEN, 1);
+    delay(500);
+    digitalWrite(RGB_RED, 0);
+    digitalWrite(RGB_GREEN, 0);
     lcd.clear();
-    // bpm heart on first
-    lcd.setCursor(1, 0);
-    lcd.write(byte(0));
-    lcd.setCursor(0, 1);
-    lcd.print(bpm);
-    //
+    lcd.print("Aguarde...");
+    musicaMedir();
+    // read the input on analog pin 0:
+    int sensorValue = analogRead(A0);
+    // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+    float voltage = sensorValue * (5.0 / 1023.0);
+    media = media + voltage;
+    Serial.println(voltage);
+    delay(500);
+    i++;
+    
+  }
+  // calcula media da tensao
+  lcd.clear();
+  // transforma em glicose
+  tensao = media/5;
+  glicose = 71.37 * tensao + 69.13;
+  lcd.setCursor(0, 0);
+  lcd.print("Glicose: ");
+  lcd.setCursor(0, 1);
+  lcd.print(String(int(glicose)) + "mg/dL");
+  Serial.println(media/5);
+  musicaFim();
+  delay(5000);
 
-    // setting up oxygen level
-    lcd.setCursor(7,0);
-    lcd.print("Oxy");
-    lcd.setCursor(7,1);
-    lcd.print(int(oxi));
-    lcd.print("%");
-    //
-
-    // set glucose
-    lcd.setCursor(13,0);
-    lcd.print("Glu");
-    lcd.setCursor(13,1);
-    glucose = 16714.61 + 0.47 * bpm -351.045 * oxi + 1.85 *(oxi * oxi);
-    lcd.print(int(glucose));
-    //
-    Serial.println("%");
-          
+  digitalWrite(RGB_GREEN, 1);  
+  digitalWrite(RGB_BLUE, 0);  
+  digitalWrite(RGB_RED, 0);
 }
- 
-void setup()
-{   
-    
-    Serial.begin(115200);
-    Serial.println("LCD...");
-    
-    Wire.begin();
-    Wire.beginTransmission(0x27);
+
+
+// the loop routine runs over and over again forever:
+void loop() {
   
-    lcd.begin(16, 2);  // initialize the lcd
-  
-    lcd.createChar(1, dotOff);
-    lcd.createChar(2, dotOn);
-    loading();
+  delay(500);
+  lcd.setBacklight(255);
+  lcd.home();
+  lcd.clear();
+  lcd.print("Insira o dedo");
+  delay(1000);
+
+  int sensorValue = analogRead(A0);
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float voltage = sensorValue * (5.0 / 1023.0);
+  // se dedo detectado, inicia rotina de medicao
+  if(voltage < float(4.8)){
+    medicao();
+  }
 
 
-    Serial.print("Initializing pulse oximeter..");
-   // set up the LCD's number of columns and rows: 
-  lcd.begin(16, 2);
-
-    // Initialize the PulseOximeter instance
-    // Failures are generally due to an improper I2C wiring, missing power supply
-    // or wrong target chip
-    if (!pox.begin()) {
-        Serial.println("FAILED");
-        for(;;);
-    } else {
-        Serial.println("SUCCESS");
-    }
-     pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA);
- 
-    // Register a callback for the beat detection
-    pox.setOnBeatDetectedCallback(onBeatDetected);
-    lcd.print("Insira o dedo");
-}
- 
-void loop()
-{
-    
-    lcd.createChar(0, Heart);
-
-    while (true){
-    // Make sure to call update as fast as possible
-      pox.update();
-    }
 }
