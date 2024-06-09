@@ -9,4 +9,15 @@ Soon, the article PDF will be disposed here.
 
 Prototype B - Clarke Error Grid
 
-![gerado3pregador](https://github.com/danielmpinto/NIR-Spectroscopy-Device/assets/82840303/1cca378d-eb45-41a1-9c46-a8edc9fb2993)
+
+![Clark Error Grid](https://github.com/danielmpinto/NIR-Spectroscopy-Device/assets/82840303/8d372ead-085f-47cc-9440-7ee3a8a96b94)
+
+
+| Parameters                     | Representation | Result                                     |
+|--------------------------------|----------------|--------------------------------------------|
+| Model to predict Glucose       | Glucose        | 𝐺𝑙𝑖𝑐𝑜𝑠𝑒𝑃𝐵 = −71.37 × voltage + 69.13       |
+| Coefficient of Determination   | R²             | R² = 0.378                                 |
+| Pearson Correlation            | r              | 𝑟 = 0.614                                  |
+
+
+
