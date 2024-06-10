@@ -21,5 +21,6 @@ Prototype B - Clarke Error Grid
 | Pearson Correlation            | r              | 𝑟 = 0.614                                  |
 
 
-[Assista ao vídeo no YouTube](https://www.youtube.com/shorts/RTA05v7VBTA)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RTA05v7VBTA" frameborder="0" allowfullscreen></iframe>
+
 
